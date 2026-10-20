@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Squid Game X: Red Light, Green Light (3D Experience 7554888362)</title>
+    <meta name="description" content="Authentic 3D Squid Game recreation with real Korean doll audio, sniper towers, elimination mechanics, and official experience assets.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 3D WebGL Canvas Container -->
+    <div id="canvas-container"></div>
+
+    <!-- Cinematic Vignette & Red Alert Overlay -->
+    <div id="cinematic-overlay" class="cinematic-overlay"></div>
+
+    <!-- Main Heads-Up Display (HUD) -->
+    <main id="hud">
+        <!-- Top Stats Bar -->
+        <header class="hud-top-bar">
+            <!-- 60-Second Countdown Clock -->
+            <div id="timer-card" class="scoreboard-card">
+                <span class="card-label">Time Remaining</span>
+                <span id="timer-val" class="card-value">01:00</span>
+            </div>
+
+            <!-- Central Light Status Banner -->
+            <div class="light-status-banner">
+                <div id="status-pill" class="status-pill green">
+                    <span class="status-indicator-dot"></span>
+                    <span id="status-text">GREEN LIGHT</span>
+                </div>
+                <div id="doll-subtext" class="doll-chant-subtext">무궁화 꽃이 피었습니다... (RUN)</div>
+            </div>
+
+            <!-- Alive Players & Accumulating Prize Pool -->
+            <div style="display: flex; gap: 12px;">
+                <div id="alive-card" class="scoreboard-card">
+                    <span class="card-label">Alive</span>
+                    <span id="alive-val" class="card-value">456 / 456</span>
+                </div>
+                <div id="prize-card" class="scoreboard-card">
+                    <span class="card-label">Prize Pool</span>
+                    <span id="prize-val" class="card-value">₩ 0.0B</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Right Side Distance Track Meter -->
+        <section class="hud-progress-container" aria-label="Course Distance">
+            <span class="progress-icon" title="Giant Doll">👧</span>
+            <div class="progress-track-vertical">
+                <div id="progress-fill" class="progress-fill-vertical"></div>
+            </div>
+            <span class="progress-icon" title="Start Line">🏁</span>
+            <span id="progress-label" class="progress-percent-label">0%</span>
+        </section>
+
+        <!-- Bottom Controls & Stamina Bar -->
+        <footer class="hud-bottom-bar">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- Sprint Stamina Bar -->
+                <div class="stamina-container">
+                    <span class="stamina-label">STAMINA (SHIFT SPRINT)</span>
+                    <div class="stamina-track">
+                        <div id="stamina-fill" class="stamina-fill"></div>
+                    </div>
+                </div>
+
+                <div class="controls-hint-card">
+                    <div><span class="key-badge">W</span><span class="key-badge">A</span><span class="key-badge">S</span><span class="key-badge">D</span> Move</div>
+                    <div><span class="key-badge">SHIFT</span> Sprint</div>
+                    <div><span class="key-badge">V</span> Toggle Camera</div>
+                </div>
+            </div>
+
+            <div class="quick-actions-group">
+                <button id="cam-btn" class="action-btn" aria-label="Switch Camera View">🎥 3rd Person</button>
+                <button id="mute-btn" class="action-btn" aria-label="Toggle Sound">🔊 Sound</button>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Mobile Virtual Joystick -->
+    <div id="mobile-controls">
+        <div id="touch-stick" class="touch-stick-zone">
+            <div id="touch-thumb" class="touch-stick-thumb"></div>
+        </div>
+    </div>
+
+    <!-- Start Menu Modal -->
+    <div id="menu-modal" class="modal-backdrop">
+        <div class="game-modal">
+            <!-- Official Experience Icon & Squid Game Shapes -->
+            <div class="modal-header-hero">
+                <img src="images/squid_game_x_icon.png" alt="Squid Game X" class="game-hero-icon">
+                <div>
+                    <div class="modal-decor-shape">
+                        <svg class="shape-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" /></svg>
+                        <svg class="shape-svg" viewBox="0 0 100 100"><polygon points="50,15 90,85 10,85" /></svg>
+                        <svg class="shape-svg" viewBox="0 0 100 100"><rect x="15" y="15" width="70" height="70" /></svg>
+                    </div>
+                    <h1 class="modal-title">SQUID GAME X</h1>
+                    <div class="badge-tag">Experience 7554888362 Recreated</div>
+                </div>
+            </div>
+
+            <!-- Authentic Official Badges -->
+            <div class="badges-row">
+                <div class="badge-item">
+                    <img src="images/badge_played.png" alt="First Time Played">
+                    <span>First Play</span>
+                </div>
+                <div class="badge-item">
+                    <img src="images/badge_win.png" alt="First Win">
+                    <span>First Win</span>
+                </div>
+                <div class="badge-item">
+                    <img src="images/badge_5wins.png" alt="5 Wins">
+                    <span>5 Wins</span>
+                </div>
+            </div>
+
+            <ul class="rules-list">
+                <li>🟢 <strong>Green Light:</strong> Sprint while the doll sings the authentic Korean chant.</li>
+                <li>🔴 <strong>Red Light:</strong> FREEZE immediately when chanting stops and her head snaps around!</li>
+                <li>🎯 <strong>Sniper Towers:</strong> Corner towers fire real-time tracer rounds at any movement.</li>
+                <li>💰 <strong>₩45.6 Billion Prize:</strong> Cross the finish line within 60 seconds to survive!</li>
+            </ul>
+
+            <button id="start-btn" class="btn-primary-start" type="button">ENTER ARENA</button>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="modal-backdrop hidden">
+        <div class="game-modal">
+            <h2 class="modal-title" style="color: var(--sg-pink);">ELIMINATED</h2>
+            <p class="modal-subtitle">You were spotted by the motion scanner and sniper tower.</p>
+
+            <div class="results-stats-grid">
+                <div class="result-stat-box">
+                    <span class="card-label">Distance Covered</span>
+                    <div id="go-dist" class="stat-box-val">0m / 300m</div>
+                </div>
+                <div class="result-stat-box">
+                    <span class="card-label">Survival Time</span>
+                    <div id="go-time" class="stat-box-val">0.0s</div>
+                </div>
+            </div>
+
+            <button id="retry-btn" class="btn-primary-start" type="button">TRY AGAIN</button>
+        </div>
+    </div>
+
+    <!-- Victory Modal -->
+    <div id="victory-modal" class="modal-backdrop hidden">
+        <div class="game-modal">
+            <h2 class="modal-title" style="color: var(--sg-teal-bright);">WINNER</h2>
+            <p class="modal-subtitle">You survived Game 1 and reached the safe zone!</p>
+
+            <div class="results-stats-grid">
+                <div class="result-stat-box">
+                    <span class="card-label">Clear Time</span>
+                    <div id="vic-time" class="stat-box-val">0.0s</div>
+                </div>
+                <div class="result-stat-box">
+                    <span class="card-label">Prize Claimed</span>
+                    <div id="vic-prize" class="stat-box-val">₩ 45.6B</div>
+                </div>
+            </div>
+
+            <button id="play-again-btn" class="btn-primary-start" type="button">PLAY AGAIN</button>
+        </div>
+    </div>
+
+    <!-- Three.js & Game Scripts -->
+    <script src="three.min.js"></script>
+    <script src="audio.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
